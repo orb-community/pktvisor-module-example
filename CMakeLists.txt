@@ -28,6 +28,7 @@ add_subdirectory(3rd)
 
 corrade_add_plugin(VisorHandlerExample
         ${CMAKE_CURRENT_BINARY_DIR}
+        ""
         VisorHandlerExample.conf
         ExampleHandlerModulePlugin.cpp
         ExampleStreamHandler.cpp)

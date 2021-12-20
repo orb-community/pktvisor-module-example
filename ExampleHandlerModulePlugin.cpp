@@ -19,13 +19,13 @@ namespace visor::handler::example {
 using namespace visor::input::mock;
 using json = nlohmann::json;
 
-void ExampleHandlerModulePlugin::setup_routes(HttpServer *svr)
+void ExampleHandlerModulePlugin::setup_routes([[maybe_unused]]HttpServer *svr)
 {
 }
 std::unique_ptr<StreamHandler> ExampleHandlerModulePlugin::instantiate(const std::string &name, InputStream *input_stream, const Configurable *config)
 {
     // TODO using config as both window config and module config
-    auto handler_module = std::make_unique<MockStreamHandler>(name, input_stream, config);
+    auto handler_module = std::make_unique<ExampleStreamHandler>(name, input_stream, config);
     return handler_module;
 }
 
