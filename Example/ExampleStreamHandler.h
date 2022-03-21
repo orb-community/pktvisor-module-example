@@ -7,9 +7,9 @@
 #include "AbstractMetricsManager.h"
 #include "MockInputStream.h"
 #include "StreamHandler.h"
-#include <spdlog/spdlog.h>
 #include <Corrade/Utility/Debug.h>
 #include <limits>
+#include <spdlog/spdlog.h>
 #include <string>
 
 namespace visor::handler::example {
@@ -28,7 +28,7 @@ protected:
         Counter mock_counter;
 
         counters()
-            : mock_counter("mock", {"counter"}, "Count of random ints from mock input source")
+            : mock_counter("example", {"counter"}, "Count of random ints from mock input source")
         {
         }
     };
@@ -76,7 +76,7 @@ class ExampleStreamHandler final : public visor::StreamMetricsHandler<ExampleMet
     void process_random_int(uint64_t i);
 
 public:
-    ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config);
+    ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config, StreamHandler *handler = nullptr);
     ~ExampleStreamHandler();
 
     // visor::AbstractModule
@@ -84,6 +84,12 @@ public:
     {
         return "example";
     }
+
+    size_t consumer_count() const override
+    {
+        return 0;
+    }
+
     void start() override;
     void stop() override;
 };

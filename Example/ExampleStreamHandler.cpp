@@ -7,30 +7,34 @@
 
 namespace visor::handler::example {
 
-ExampleStreamHandler::ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config)
+ExampleStreamHandler::ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config, StreamHandler *handler)
     : visor::StreamMetricsHandler<ExampleMetricsManager>(name, window_config)
 {
+    if (handler) {
+        throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported upstream chained stream handler {}", handler->name()));
+    }
+
     assert(stream);
-    _logger = spdlog::get("dyn-mock-handler");
+    _logger = spdlog::get("dyn-example-handler");
     if (!_logger) {
-        _logger = spdlog::stderr_color_mt("dyn-mock-handler");
+        _logger = spdlog::stderr_color_mt("dyn-example-handler");
     }
     assert(_logger);
     // figure out which input stream we have
     _mock_stream = dynamic_cast<MockInputStream *>(stream);
     if (!_mock_stream) {
-        throw StreamHandlerException(fmt::format("MockStreamHandler: unsupported input stream {}", stream->name()));
+        throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported input stream {}", stream->name()));
     }
-    _logger->info("mock handler created");
+    _logger->info("example handler created");
 }
 ExampleStreamHandler::~ExampleStreamHandler()
 {
-    _logger->info("mock handler destroyed");
+    _logger->info("example handler destroyed");
 }
 
 void ExampleStreamHandler::process_random_int(uint64_t i)
 {
-    _logger->info("mock handler received random int signal: {}", i);
+    _logger->info("example handler received random int signal: {}", i);
     _metrics->process_random_int(i);
 }
 
@@ -53,7 +57,7 @@ void ExampleStreamHandler::stop()
         return;
     }
 
-    _logger->info("mock handler stop()");
+    _logger->info("example handler stop()");
 
     _running = false;
 }
