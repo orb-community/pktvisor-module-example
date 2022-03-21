@@ -36,4 +36,4 @@ target_link_libraries(VisorHandlerExampleDyn
         VisorHandlerExample
         )
 
-#add_subdirectory(tests)
+add_subdirectory(tests)

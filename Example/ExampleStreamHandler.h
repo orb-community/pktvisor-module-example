@@ -11,6 +11,7 @@
 #include <limits>
 #include <spdlog/spdlog.h>
 #include <string>
+#include <sqlite3.h>
 
 namespace visor::handler::example {
 
@@ -67,7 +68,7 @@ public:
 
 class ExampleStreamHandler final : public visor::StreamMetricsHandler<ExampleMetricsManager>
 {
-
+    sqlite3 *db; //only for showing conan dependency
     MockInputStream *_mock_stream;
     std::shared_ptr<spdlog::logger> _logger;
 

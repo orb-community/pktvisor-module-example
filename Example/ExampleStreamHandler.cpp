@@ -9,6 +9,7 @@ namespace visor::handler::example {
 
 ExampleStreamHandler::ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config, StreamHandler *handler)
     : visor::StreamMetricsHandler<ExampleMetricsManager>(name, window_config)
+    , db(nullptr)
 {
     if (handler) {
         throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported upstream chained stream handler {}", handler->name()));
