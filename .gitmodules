@@ -1,0 +1,3 @@
+[submodule "pktvisor"]
+	path = pktvisor
+	url = git@github.com:ns1labs/pktvisor.git
