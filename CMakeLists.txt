@@ -44,6 +44,7 @@ conan_basic_setup()
 
 find_package(Corrade REQUIRED PluginManager)
 
+#Should add new custom pktvisor modules here
 add_subdirectory(Example)
 
 enable_testing()
