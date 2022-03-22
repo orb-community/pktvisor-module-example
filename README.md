@@ -14,7 +14,7 @@ To build this project you can simple follow the commands.
 ```
 git clone https://github.com/ns1labs/pktvisor-module-example.git
 cd pktvisor-module-example
-git submodule  update --init --recursive --remote --progress
+git submodule  update --init --recursive --progress
 mkdir build && cd build
 
 # configure and handle dependencies 
