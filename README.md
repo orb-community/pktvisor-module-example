@@ -32,8 +32,5 @@ You can change the folder of those files. Then, to use the Dynamic Module in pkt
 ```
 
 ### Adding new module dependencies on conan
-If you want to add new 3rd party libraries through conan, the simplest way to achieve that is to add 
-the dependency to [pktvisor/conanfile.txt](pktvisor/conanfile.txt).
-
+If you want to add new 3rd party libraries through conan, you just need to add it to [conanfile.txt](conanfile.txt).
 For instance, the Example Module has a dependency to `sqlite3` which is not an original pktvisor dependency.
-It was added to [pktvisor/conanfile.txt](pktvisor/conanfile.txt) and it is only used by this project module.
