@@ -42,9 +42,9 @@ include(${CMAKE_BINARY_DIR}/module/conanbuildinfo.cmake)# add module conan depen
 
 conan_basic_setup()
 
+enable_testing()
+
 find_package(Corrade REQUIRED PluginManager)
 
 #Should add new custom pktvisor modules here
 add_subdirectory(Example)
-
-enable_testing()

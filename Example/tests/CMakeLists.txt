@@ -12,6 +12,6 @@ target_link_libraries(unit-tests-handler-example
         )
 
 add_test(NAME unit-tests-handler-example
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         COMMAND unit-tests-handler-example
         )
