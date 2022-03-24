@@ -1,6 +1,6 @@
 # Metrics Stream Handler Example
 
-This directory contains a stream handler example for module developers.
+This directory contains a stream handler example for [pktvisor](https://github.com/ns1labs/pktvisor) module developers.
 In order to create your own pktvisor module, you can use this repository as reference.
 You can also use the standard modules as reference code for your own module.
 
