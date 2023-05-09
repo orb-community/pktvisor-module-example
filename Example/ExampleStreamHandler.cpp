@@ -7,24 +7,20 @@
 
 namespace visor::handler::example {
 
-ExampleStreamHandler::ExampleStreamHandler(const std::string &name, InputStream *stream, const Configurable *window_config, StreamHandler *handler)
+ExampleStreamHandler::ExampleStreamHandler(const std::string &name, InputEventProxy *proxy, const Configurable *window_config)
     : visor::StreamMetricsHandler<ExampleMetricsManager>(name, window_config)
     , db(nullptr)
 {
-    if (handler) {
-        throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported upstream chained stream handler {}", handler->name()));
-    }
-
-    assert(stream);
+    assert(proxy);
     _logger = spdlog::get("dyn-example-handler");
     if (!_logger) {
         _logger = spdlog::stderr_color_mt("dyn-example-handler");
     }
     assert(_logger);
     // figure out which input stream we have
-    _mock_stream = dynamic_cast<MockInputStream *>(stream);
-    if (!_mock_stream) {
-        throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported input stream {}", stream->name()));
+    _mock_proxy = dynamic_cast<MockInputEventProxy *>(proxy);
+    if (!_mock_proxy) {
+        throw StreamHandlerException(fmt::format("ExampleStreamHandler: unsupported input stream {}", proxy->name()));
     }
     _logger->info("example handler created");
 }
@@ -47,7 +43,7 @@ void ExampleStreamHandler::start()
 
     _logger->info("mock handler start()");
 
-    _random_int_connection = _mock_stream->random_int_signal.connect(&ExampleStreamHandler::process_random_int, this);
+    _random_int_connection = _mock_proxy->random_int_signal.connect(&ExampleStreamHandler::process_random_int, this);
 
     _running = true;
 }
@@ -63,7 +59,7 @@ void ExampleStreamHandler::stop()
     _running = false;
 }
 
-void ExampleMetricsBucket::specialized_merge(const AbstractMetricsBucket &o)
+void ExampleMetricsBucket::specialized_merge(const AbstractMetricsBucket &o, [[maybe_unused]] Metric::Aggregate agg_operator)
 {
     // static because caller guarantees only our own bucket type
     const auto &other = static_cast<const ExampleMetricsBucket &>(o);
@@ -79,6 +75,13 @@ void ExampleMetricsBucket::to_prometheus(std::stringstream &out, Metric::LabelMa
     std::shared_lock r_lock(_mutex);
 
     _counters.mock_counter.to_prometheus(out, add_labels);
+}
+
+void ExampleMetricsBucket::to_opentelemetry(metrics::v1::ScopeMetrics &scope, timespec &start_ts, timespec &end_ts, Metric::LabelMap add_labels) const
+{
+    std::shared_lock r_lock(_mutex);
+
+    _counters.mock_counter.to_opentelemetry(scope, start_ts, end_ts, add_labels);
 }
 
 void ExampleMetricsBucket::to_json(json &j) const
