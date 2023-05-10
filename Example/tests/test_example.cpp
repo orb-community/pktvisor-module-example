@@ -13,7 +13,8 @@ TEST_CASE("Parse net (dns) UDP IPv4 tests", "[pcap][net]")
 
     visor::Config c;
     c.config_set<uint64_t>("num_periods", 1);
-    ExampleStreamHandler example_handler{"example-test", &stream, &c};
+    auto stream_proxy = stream.add_event_proxy(c);
+    ExampleStreamHandler example_handler{"example-test", stream_proxy, &c};
 
     example_handler.start();
     stream.start();
